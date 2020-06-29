@@ -61,6 +61,7 @@ export const EditIcon = styled(Icon)`
     font-size: 25px;
     color: ${colors.warn};
     position: absolute;
+    z-index: 3;
     top: 10px;
     right: 50px;
 `;
@@ -69,6 +70,7 @@ export const DeleteIcon = styled(Icon)`
     font-size: 25px;
     color: ${colors.danger};
     position: absolute;
+    z-index: 3;
     top: 10px;
     right: 20px;
 `;
@@ -78,6 +80,8 @@ export const NewsContainer = styled.View`
 `;
 
 export const NewsBackground = styled.View`
+    position: relative;
+    z-index: 1;
     background-color: #fff;
     border-radius: 15px;
     margin-top: 16px;
@@ -89,6 +93,8 @@ export const NewsBackground = styled.View`
 `;
 
 export const NewsTitle = styled.Text`
+    align-self: flex-start;
+    text-decoration: underline;
     font-size: 18px;
     font-weight: bold;
     color: ${colors.primary};

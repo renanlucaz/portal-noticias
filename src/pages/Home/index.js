@@ -51,9 +51,17 @@ const Home = ({ navigation }) => {
 
                 <NewsContainer>
                     <NewsBackground>
-                        <EditIcon name="file-document-edit" />
-                        <DeleteIcon name="trash-can" />
-                        <NewsTitle>Título da notícia</NewsTitle>
+                        <EditIcon
+                            name="file-document-edit"
+                            onPress={() => handleNavigate('News')}
+                        />
+                        <DeleteIcon
+                            name="trash-can"
+                            onPress={() => handleNavigate('News')}
+                        />
+                        <NewsTitle onTouchStart={() => handleNavigate('News')}>
+                            Título da notícia
+                        </NewsTitle>
                         <NewsText>Lorem impsul dolot amet..</NewsText>
                         <NewsAuthorContainer>
                             <NewsAuthorSpan>Autor: </NewsAuthorSpan>
