@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
-
 import { KeyboardAvoidingView, Alert } from 'react-native';
+
+import getRealm from '../../services/realm';
 
 import {
     Container,
@@ -23,11 +24,36 @@ import Button from '../../components/Button';
 import background from '../../assets/background.jpg';
 
 const CreateNews = ({ navigation }) => {
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [content, setContent] = useState('');
+
     function handleNavigate(page) {
         navigation.navigate(page);
     }
 
-    function handleSubmit() {
+    async function saveNews(news) {
+        const id = Math.floor(Math.random() * (1000 - 1 + 1) + 1);
+
+        const data = {
+            id,
+            title: news.title,
+            author: news.author,
+            content: news.content,
+        };
+
+        const realm = await getRealm();
+
+        realm.write(() => {
+            realm.create('News', data);
+        });
+    }
+
+    async function handleSubmit() {
+        const data = { title, author, content };
+
+        await saveNews(data);
+
         navigation.navigate('Home');
 
         Alert.alert('Sucesso', 'Uma nova notícia foi criada com sucesso!');
@@ -51,12 +77,20 @@ const CreateNews = ({ navigation }) => {
                 <KeyboardAvoidingView behavior="position">
                     <Field>
                         <Label>Título</Label>
-                        <Input placeholder="Título da notícia" />
+                        <Input
+                            placeholder="Título da notícia"
+                            value={title}
+                            onChangeText={(text) => setTitle(text)}
+                        />
                     </Field>
 
                     <Field>
                         <Label>Autor</Label>
-                        <Input placeholder="Autor da notícia" />
+                        <Input
+                            placeholder="Autor da notícia"
+                            value={author}
+                            onChangeText={(text) => setAuthor(text)}
+                        />
                     </Field>
                     <Field>
                         <Label>Conteúdo da notícia</Label>
@@ -65,6 +99,8 @@ const CreateNews = ({ navigation }) => {
                             placeholder="Escreva aqui"
                             multiline
                             numberOfLines={4}
+                            value={content}
+                            onChangeText={(text) => setContent(text)}
                         />
                     </Field>
                 </KeyboardAvoidingView>

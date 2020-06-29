@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 
@@ -12,20 +12,29 @@ import {
     ButtonText,
     Main,
     FindInput,
-    NewsContainer,
-    EditIcon,
-    DeleteIcon,
-    NewsBackground,
-    NewsTitle,
-    NewsText,
-    NewsAuthorContainer,
-    NewsAuthorSpan,
-    NewsAuthor,
+    NewsList,
 } from './styles';
 
+import News from '../../components/News';
+
 import background from '../../assets/background.jpg';
+import getRealm from '../../services/realm';
 
 const Home = ({ navigation }) => {
+    const [news, setNews] = useState([]);
+
+    useEffect(() => {
+        async function loadNews() {
+            const realm = await getRealm();
+
+            const data = realm.objects('News');
+
+            setNews(data);
+        }
+
+        loadNews();
+    }, []);
+
     function handleNavigate(page) {
         navigation.navigate(page);
     }
@@ -49,46 +58,14 @@ const Home = ({ navigation }) => {
             <Main>
                 <FindInput placeholder="Pesquise por uma" />
 
-                <NewsContainer>
-                    <NewsBackground>
-                        <EditIcon
-                            name="file-document-edit"
-                            onPress={() => handleNavigate('News')}
-                        />
-                        <DeleteIcon
-                            name="trash-can"
-                            onPress={() => handleNavigate('News')}
-                        />
-                        <NewsTitle onTouchStart={() => handleNavigate('News')}>
-                            Título da notícia
-                        </NewsTitle>
-                        <NewsText>Lorem impsul dolot amet..</NewsText>
-                        <NewsAuthorContainer>
-                            <NewsAuthorSpan>Autor: </NewsAuthorSpan>
-                            <NewsAuthor>Renan Nascimento</NewsAuthor>
-                        </NewsAuthorContainer>
-                    </NewsBackground>
-                    <NewsBackground>
-                        <EditIcon name="file-document-edit" />
-                        <DeleteIcon name="trash-can" />
-                        <NewsTitle>Título da notícia</NewsTitle>
-                        <NewsText>Lorem impsul dolot amet..</NewsText>
-                        <NewsAuthorContainer>
-                            <NewsAuthorSpan>Autor: </NewsAuthorSpan>
-                            <NewsAuthor>Renan Nascimento</NewsAuthor>
-                        </NewsAuthorContainer>
-                    </NewsBackground>
-                    <NewsBackground>
-                        <EditIcon name="file-document-edit" />
-                        <DeleteIcon name="trash-can" />
-                        <NewsTitle>Título da notícia</NewsTitle>
-                        <NewsText>Lorem impsul dolot amet..</NewsText>
-                        <NewsAuthorContainer>
-                            <NewsAuthorSpan>Autor: </NewsAuthorSpan>
-                            <NewsAuthor>Renan Nascimento</NewsAuthor>
-                        </NewsAuthorContainer>
-                    </NewsBackground>
-                </NewsContainer>
+                <NewsList
+                    keyboardShouldPersistTaps="handled"
+                    data={news}
+                    keyExtractor={(notice) => String(notice.id)}
+                    renderItem={({ item }) => (
+                        <News data={item} navigation={navigation} />
+                    )}
+                />
             </Main>
         </Container>
     );
