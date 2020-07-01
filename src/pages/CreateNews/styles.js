@@ -27,7 +27,7 @@ export const BackIcon = styled(Icon)`
 `;
 
 export const Title = styled.Text`
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     color: white;
 `;
@@ -35,7 +35,7 @@ export const Title = styled.Text`
 export const Description = styled.Text`
     font-size: 18px;
     color: white;
-    margin-top: 16px;
+    margin-top: 15px;
 `;
 
 export const Form = styled.KeyboardAvoidingView`
@@ -47,9 +47,9 @@ export const Field = styled.View`
 `;
 
 export const Label = styled.Text`
-    font-size: 18px;
+    font-size: 15px;
     color: ${colors.primary};
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 `;
 
 export const Input = styled.TextInput`

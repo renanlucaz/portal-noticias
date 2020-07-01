@@ -51,10 +51,14 @@ const Home = ({ navigation }) => {
         realm.write(async () => {
             const allNews = realm.objects('News');
 
-            const FilteredNews = allNews.filtered(`title CONTAINS "${search}"`);
+            const filteredNews = allNews.filtered(
+                `title CONTAINS[c] '${search}'`
+            );
 
-            if (FilteredNews) {
-                setNews(FilteredNews);
+            if (filteredNews) {
+                setNews(filteredNews);
+            } else {
+                setNews([]);
             }
         });
     }

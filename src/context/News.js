@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 const NewsContext = createContext();
 
@@ -17,3 +18,7 @@ export function useNews() {
     const { news, setNews } = context;
     return { news, setNews };
 }
+
+NewsProvider.propTypes = {
+    children: PropTypes.shape().isRequired,
+};
