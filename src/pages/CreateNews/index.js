@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import HideWithKeyboard from 'react-native-hide-with-keyboard';
 import { KeyboardAvoidingView, Alert } from 'react-native';
+
+import { useNews } from '../../context/News';
 
 import getRealm from '../../services/realm';
 
@@ -23,40 +25,79 @@ import Button from '../../components/Button';
 
 import background from '../../assets/background.jpg';
 
-const CreateNews = ({ navigation }) => {
+const CreateNews = ({ navigation, route: { params } }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
+
+    const { news, setNews } = useNews();
+
+    const { edit } = params;
+
+    if (edit) {
+        useEffect(() => {
+            function loadInput() {
+                const { data } = params;
+
+                setTitle(data.title);
+                setAuthor(data.author);
+                setContent(data.content);
+            }
+            loadInput();
+        }, []);
+    }
 
     function handleNavigate(page) {
         navigation.navigate(page);
     }
 
-    async function saveNews(news) {
-        const id = Math.floor(Math.random() * (1000 - 1 + 1) + 1);
-
-        const data = {
-            id,
-            title: news.title,
-            author: news.author,
-            content: news.content,
+    async function createNews(data) {
+        const newsData = {
+            id: data.id,
+            title: data.title,
+            author: data.author,
+            content: data.content,
         };
 
         const realm = await getRealm();
 
         realm.write(() => {
-            realm.create('News', data);
+            realm.create('News', newsData, 'modified');
         });
+
+        return newsData;
     }
 
     async function handleSubmit() {
-        const data = { title, author, content };
+        const id = Math.floor(Math.random() * (1000 - 1 + 1) + 1);
 
-        await saveNews(data);
+        const newsData = { id, title, author, content };
+
+        setNews([...news, newsData]);
+
+        await createNews(newsData);
 
         navigation.navigate('Home');
 
         Alert.alert('Sucesso', 'Uma nova notícia foi criada com sucesso!');
+    }
+
+    async function handleEdit() {
+        const { data } = params;
+
+        const editedData = { id: data.id, title, author, content };
+
+        createNews(editedData);
+
+        const realm = await getRealm();
+
+        const newData = realm.objects('News');
+
+        setNews(newData);
+
+        navigation.navigate('Home', { data });
+
+        Alert.alert('Sucesso', 'O valor foi editado');
     }
 
     return (
@@ -68,8 +109,12 @@ const CreateNews = ({ navigation }) => {
                             name="keyboard-backspace"
                             onPress={() => handleNavigate('Home')}
                         />
-                        <Title>Criar notícia</Title>
-                        <Description>Crie uma nova notícia</Description>
+                        <Title>
+                            {edit ? 'Editar notícia' : 'Criar notícia'}
+                        </Title>
+                        <Description>
+                            {edit ? 'Edite sua notícia' : 'Crie uma notícia'}
+                        </Description>
                     </Header>
                 </BackgroundImage>
             </HideWithKeyboard>
@@ -104,8 +149,11 @@ const CreateNews = ({ navigation }) => {
                         />
                     </Field>
                 </KeyboardAvoidingView>
-
-                <Button title="Criar" action={handleSubmit} />
+                {edit ? (
+                    <Button title="Editar" action={handleEdit} />
+                ) : (
+                    <Button title="Criar" action={handleSubmit} />
+                )}
             </Form>
         </Container>
     );
@@ -114,6 +162,17 @@ const CreateNews = ({ navigation }) => {
 CreateNews.propTypes = {
     navigation: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
+    }).isRequired,
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            edit: PropTypes.bool,
+            data: PropTypes.shape({
+                title: PropTypes.string,
+                author: PropTypes.string,
+                content: PropTypes.string,
+                id: PropTypes.number,
+            }),
+        }),
     }).isRequired,
 };
 

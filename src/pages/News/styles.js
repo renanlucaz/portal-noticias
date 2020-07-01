@@ -18,16 +18,27 @@ export const Header = styled(LinearGradient).attrs({
 
 export const BackgroundImage = styled.ImageBackground``;
 
-export const BackIcon = styled(Icon)`
+export const BackContainer = styled.View`
+    flex-direction: row;
     position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 34px;
-    color: #fff;
+    align-items: center;
+    top: 10px;
+    left: 10px;
+`;
+
+export const BackIcon = styled(Icon)`
+    font-size: 30px;
+    color: #333;
+`;
+
+export const BackText = styled.Text`
+    font-size: 17px;
+    font-weight: bold;
+    color: #333;
 `;
 
 export const Title = styled.Text`
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     color: white;
 `;
@@ -39,10 +50,13 @@ export const Description = styled.Text`
 `;
 
 export const Content = styled.View`
+    flex: 1;
     padding: 22px;
+    position: relative;
 `;
 
 export const Text = styled.Text`
     font-size: 16px;
+    margin-top: 35px;
     text-align: justify;
 `;
