@@ -28,7 +28,7 @@ const News = ({ navigation, route: { params } }) => {
             <BackgroundImage source={background}>
                 <Header>
                     <Title>{data.title}</Title>
-                    <Description>{data.author}</Description>
+                    <Description>de: {data.author}</Description>
                 </Header>
             </BackgroundImage>
             <Content>
