@@ -9,9 +9,7 @@
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/renanlucaz/portal-noticias?color=%2304D361">
 
-  ![Portal de notícias](https://i.ibb.co/FmLRBQG/title.jpg)
-
-
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/renanlucaz/portal-noticias">
 
   <a href="https://github.com/renanlucaz/portal-noticias/commits/master">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/renanlucaz/portal-noticias">
