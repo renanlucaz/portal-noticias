@@ -12,8 +12,7 @@ export const Container = styled.View`
 export const Header = styled(LinearGradient).attrs({
     colors: [`${colors.primary}`, 'rgba(0,0,0,.2)'],
 })`
-    padding: 18px 0 20px 0;
-    align-items: center;
+    padding: 18px 10px 20px;
 `;
 
 export const BackgroundImage = styled.ImageBackground``;
@@ -38,7 +37,7 @@ export const BackText = styled.Text`
 `;
 
 export const Title = styled.Text`
-    font-size: 28px;
+    font-size: 25px;
     font-weight: bold;
     color: white;
 `;
