@@ -11,8 +11,6 @@
 
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/renanlucaz/portal-noticias">
 
-
-
   <a href="https://github.com/renanlucaz/portal-noticias/commits/master">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/renanlucaz/portal-noticias">
   </a>
